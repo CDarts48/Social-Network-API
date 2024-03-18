@@ -1,7 +1,11 @@
-const router = require("express").Router();
-const apiRoutes = require("./api");
+const express = require("express");
+const router = express.Router();
 
-router.use("/api", apiRoutes);
+const thoughtsRoutes = require("../Routes/API/thoughts");
+const usersRoutes = require("../Routes/API/users");
+
+router.use("/api/thoughts", thoughtsRoutes);
+router.use("/api/users", usersRoutes);
 
 router.use((req, res) => res.send("Wrong route!"));
 

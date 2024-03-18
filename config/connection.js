@@ -11,4 +11,7 @@ mongoose.connect(
 // Use this to log mongo queries being executed!
 mongoose.set("debug", true);
 
+// Set 'strictQuery' to true to suppress deprecation warning
+mongoose.set("strictQuery", true);
+
 module.exports = mongoose.connection;
