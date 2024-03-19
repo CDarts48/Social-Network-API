@@ -20,17 +20,8 @@ const UserSchema = new Schema({
       ref: 'Thought',
     },
   ],
-  friends: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-    },
-  ],
 });
 
-UserSchema.virtual("friendCount").get(function () {
-  return this.friends.length;
-});
 
 const User = mongoose.model("User", UserSchema);
 

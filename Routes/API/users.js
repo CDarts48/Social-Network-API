@@ -5,13 +5,13 @@ const { Thought } = require("../../Models/Thought");
 
 // GET all users
 router.get("/", async (req, res) => {
-  const users = await User.find().populate("thoughts friends");
+  const users = await User.find().populate("thoughts");
   res.json(users);
 });
 
-// GET a single user by its _id and populated thought and friend data
+// GET a single user by its _id and populated thought and data
 router.get("/:id", async (req, res) => {
-  const user = await User.findById(req.params.id).populate("thoughts friends");
+  const user = await User.findById(req.params.id).populate("thoughts");
   res.json(user);
 });
 
