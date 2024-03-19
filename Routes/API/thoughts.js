@@ -3,7 +3,7 @@ const router = express.Router();
 const { Thought, User } = require("../../Models");
 
 // GET all thoughts
-router.get("/api/thoughts", (req, res) => {
+router.get("/", (req, res) => {
   Thought.find({})
     .then((dbThoughtData) => res.json(dbThoughtData))
     .catch((err) => {
@@ -13,7 +13,7 @@ router.get("/api/thoughts", (req, res) => {
 });
 
 // GET a single thought by id
-router.get("/api/thoughts/:id", (req, res) => {
+router.get("/:id", (req, res) => {
   Thought.findById(req.params.id)
     .then((dbThoughtData) => res.json(dbThoughtData))
     .catch((err) => {
