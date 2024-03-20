@@ -23,7 +23,7 @@ router.get("/:id", (req, res) => {
 });
 
 // POST a new thought
-router.post("/thoughts", (req, res) => {
+router.post("/", (req, res) => {
   Thought.create(req.body)
     .then(({ _id }) => {
       return User.findOneAndUpdate(
@@ -43,7 +43,7 @@ router.post("/thoughts", (req, res) => {
 });
 
 // PUT to update a thought by id
-router.put("/thoughts/:id", (req, res) => {
+router.put("/:id", (req, res) => {
   Thought.findByIdAndUpdate(req.params.id, req.body, { new: true })
     .then((dbThoughtData) => res.json(dbThoughtData))
     .catch((err) => {
@@ -53,7 +53,7 @@ router.put("/thoughts/:id", (req, res) => {
 });
 
 // DELETE to remove a thought by id
-router.delete("/thoughts/:id", (req, res) => {
+router.delete("/:id", (req, res) => {
   Thought.findByIdAndDelete(req.params.id)
     .then((dbThoughtData) => res.json(dbThoughtData))
     .catch((err) => {
@@ -63,7 +63,7 @@ router.delete("/thoughts/:id", (req, res) => {
 });
 
 // POST to create a reaction in a thought's reactions array
-router.post("/thoughts/:thoughtId/reactions", (req, res) => {
+router.post("/:thoughtId/reactions", (req, res) => {
   Thought.findByIdAndUpdate(
     req.params.thoughtId,
     { $push: { reactions: req.body } },
@@ -77,7 +77,7 @@ router.post("/thoughts/:thoughtId/reactions", (req, res) => {
 });
 
 // DELETE to remove a reaction by its id
-router.delete("/thoughts/:thoughtId/reactions/:reactionId", (req, res) => {
+router.delete("/:thoughtId/reactions/:reactionId", (req, res) => {
   Thought.findByIdAndUpdate(
     req.params.thoughtId,
     { $pull: { reactions: { reactionId: req.params.reactionId } } },
