@@ -18,8 +18,10 @@ router.get("/:id", async (req, res) => {
 // POST a new user
 router.post("/", async (req, res) => {
   const user = new User(req.body);
-  await user.save();
-  res.json(user);
+  await user
+    .save()
+    .then((user) => res.json(user))
+    .catch((err) => res.status(400).json(err));
 });
 
 // PUT to update a user by its _id
@@ -34,7 +36,7 @@ router.put("/:id", async (req, res) => {
 router.put("/:userId/thoughts/:thoughtId", async (req, res) => {
   const thought = await Thought.findById(req.params.thoughtId);
   if (!thought) {
-    return res.status(404).json({ message: 'No thought found with this id!' });
+    return res.status(404).json({ message: "No thought found with this id!" });
   }
 
   const user = await User.findByIdAndUpdate(
@@ -44,7 +46,7 @@ router.put("/:userId/thoughts/:thoughtId", async (req, res) => {
   );
 
   if (!user) {
-    return res.status(404).json({ message: 'No user found with this id!' });
+    return res.status(404).json({ message: "No user found with this id!" });
   }
 
   res.json(user);
