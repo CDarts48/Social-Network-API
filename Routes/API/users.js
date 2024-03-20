@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../../Models/User");
-const { Thought } = require("../../Models/Thought");
+const Thought = require("../../Models/Thought");
 
 // GET all users
 router.get("/", async (req, res) => {
@@ -55,6 +55,10 @@ router.put("/:userId/thoughts/:thoughtId", async (req, res) => {
 // DELETE to remove user by its _id
 router.delete("/:id", async (req, res) => {
   const user = await User.findByIdAndDelete(req.params.id);
+
+  if (!user) {
+    return res.status(404).json({ message: "No user found with this id!" });
+  }
 
   // BONUS: Remove a user's associated thoughts when deleted
   await Thought.deleteMany({ username: user.username });
