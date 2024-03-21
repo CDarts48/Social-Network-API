@@ -63,6 +63,41 @@ const userController = {
       res.status(500).send(error);
     }
   },
+
+  // Add a friend to a user's friends array
+  addFriend: async (req, res) => {
+    try {
+      const user = await User.findByIdAndUpdate(
+        req.params.userId,
+        { $push: { friends: req.params.friendId } },
+        { new: true, runValidators: true }
+      ).populate("friends");
+
+      if (!user) {
+        return res.status(404).send();
+      }
+      res.send(user);
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  },
+
+  // Remove a friend from a user's friends array
+  removeFriend: async (req, res) => {
+    try {
+      const user = await User.findByIdAndUpdate(
+        req.params.userId,
+        { $pull: { friends: req.params.friendId } },
+        { new: true }
+      );
+      if (!user) {
+        return res.status(404).send();
+      }
+      res.send(user);
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  },
 };
 
 module.exports = userController;

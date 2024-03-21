@@ -5,13 +5,13 @@ const Thought = require("../../Models/Thought");
 
 // GET all users
 router.get("/", async (req, res) => {
-  const users = await User.find().populate("thoughts");
+  const users = await User.find().populate("thoughts friends");
   res.json(users);
 });
 
-// GET a single user by its _id and populated thought and data
+// GET a single user by its _id and populated thought and friend data
 router.get("/:id", async (req, res) => {
-  const user = await User.findById(req.params.id).populate("thoughts");
+  const user = await User.findById(req.params.id).populate("thoughts friends");
   res.json(user);
 });
 
@@ -50,6 +50,48 @@ router.put("/:userId/thoughts/:thoughtId", async (req, res) => {
   }
 
   res.json(user);
+});
+
+// POST /:userId/friends/:friendId
+router.post("/:userId/friends/:friendId", async (req, res) => {
+  console.log("userId:", req.params.userId);
+  console.log("friendId:", req.params.friendId);
+
+  try {
+    // Find the friend by _id
+    const friend = await User.findById(req.params.friendId);
+    console.log("friend:", friend);
+    if (!friend) {
+      return res.status(404).json({ message: "Friend not found" });
+    }
+
+    // Add the friend's ID to the existing user's friends array
+    const user = await User.findByIdAndUpdate(
+      req.params.userId,
+      { $push: { friends: friend._id } },
+      { new: true }
+    );
+    console.log("user:", user);
+
+    res.json(user);
+  } catch (err) {
+    console.log("error:", err);
+    res.status(500).json(err);
+  }
+});
+
+// Remove a friend
+router.delete("/:userId/friends/:friendId", async (req, res) => {
+  try {
+    const user = await User.findByIdAndUpdate(
+      req.params.userId,
+      { $pull: { friends: req.params.friendId } },
+      { new: true }
+    );
+    res.json(user);
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 // DELETE to remove user by its _id

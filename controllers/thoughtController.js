@@ -15,7 +15,7 @@ const thoughtController = {
   getAll: async (req, res) => {
     try {
       const thoughts = await Thought.find({});
-      res.status(200).json(thoughts);
+      res.status(201).json(thoughts);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -29,7 +29,7 @@ const thoughtController = {
       if (!thought) {
         res.status(404).json({ message: "Thought not found" });
       } else {
-        res.status(200).json(thought);
+        res.status(201).json(thought);
       }
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -46,7 +46,7 @@ const thoughtController = {
       if (!thought) {
         res.status(404).json({ message: "Thought not found" });
       } else {
-        res.status(200).json(thought);
+        res.status(201).json(thought);
       }
     } catch (error) {
       res.status(500).json({ error: error.message });

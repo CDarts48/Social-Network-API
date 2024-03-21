@@ -62,32 +62,4 @@ router.delete("/:id", (req, res) => {
     });
 });
 
-// POST to create a reaction in a thought's reactions array
-router.post("/:thoughtId/reactions", (req, res) => {
-  Thought.findByIdAndUpdate(
-    req.params.thoughtId,
-    { $push: { reactions: req.body } },
-    { new: true }
-  )
-    .then((dbThoughtData) => res.json(dbThoughtData))
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json(err);
-    });
-});
-
-// DELETE to remove a reaction by its id
-router.delete("/:thoughtId/reactions/:reactionId", (req, res) => {
-  Thought.findByIdAndUpdate(
-    req.params.thoughtId,
-    { $pull: { reactions: { reactionId: req.params.reactionId } } },
-    { new: true }
-  )
-    .then((dbThoughtData) => res.json(dbThoughtData))
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json(err);
-    });
-});
-
 module.exports = router;
