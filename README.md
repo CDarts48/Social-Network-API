@@ -9,8 +9,8 @@ THe purpose of this is to create a back end for a social netwoking site with rea
 NA
 
 ## Screenshot
-![alt-text:'Screen shot of app']() 
-
+[![alt-text:'Screen shot of app']() 
+](https://drive.google.com/file/d/1H8se8i7oddABmDJhWdgyJ9gMisNuZhQv/view)
 ## Table of Contents
 * [Features](#features)
 * [Languages & Dependencies](#languages--dependencies)
