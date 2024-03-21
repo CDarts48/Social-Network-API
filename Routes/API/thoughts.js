@@ -61,5 +61,32 @@ router.delete("/:id", (req, res) => {
       res.status(500).json(err);
     });
 });
+// POST a new reaction to a thought
+router.post("/:thoughtId/reactions", (req, res) => {
+  Thought.findByIdAndUpdate(
+    req.params.thoughtId,
+    { $push: { reactions: req.body } },
+    { new: true, runValidators: true }
+  )
+    .then((dbThoughtData) => {
+      if (!dbThoughtData) {
+        res.status(404).json({ message: "No thought found with this id!" });
+        return;
+      }
+      res.json(dbThoughtData);
+    })
+    .catch((err) => res.json(err));
+});
+
+// DELETE a reaction from a thought
+router.delete("/:thoughtId/reactions/:reactionId", (req, res) => {
+  Thought.findByIdAndUpdate(
+    req.params.thoughtId,
+    { $pull: { reactions: { reactionId: req.params.reactionId } } },
+    { new: true }
+  )
+    .then((dbThoughtData) => res.json(dbThoughtData))
+    .catch((err) => res.json(err));
+});
 
 module.exports = router;

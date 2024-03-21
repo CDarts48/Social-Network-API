@@ -15,7 +15,7 @@ const thoughtController = {
   getAll: async (req, res) => {
     try {
       const thoughts = await Thought.find({});
-      res.status(201).json(thoughts);
+      res.status(200).json(thoughts);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -29,7 +29,7 @@ const thoughtController = {
       if (!thought) {
         res.status(404).json({ message: "Thought not found" });
       } else {
-        res.status(201).json(thought);
+        res.status(200).json(thought);
       }
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -46,7 +46,7 @@ const thoughtController = {
       if (!thought) {
         res.status(404).json({ message: "Thought not found" });
       } else {
-        res.status(201).json(thought);
+        res.status(200).json(thought);
       }
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -63,6 +63,44 @@ const thoughtController = {
       } else {
         res.status(204).json({ message: "Thought deleted" });
       }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
+  // Add a reaction to a thought
+  addReaction: async (req, res) => {
+    try {
+      const { thoughtId } = req.params;
+      const thought = await Thought.findByIdAndUpdate(
+        thoughtId,
+        { $push: { reactions: req.body } },
+        { new: true, runValidators: true }
+      );
+      if (!thought) {
+        res.status(404).json({ message: "Thought not found" });
+        return;
+      }
+      res.status(201).json(thought);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
+  // Remove a reaction from a thought
+  removeReaction: async (req, res) => {
+    try {
+      const { thoughtId, reactionId } = req.params;
+      const thought = await Thought.findByIdAndUpdate(
+        thoughtId,
+        { $pull: { reactions: { reactionId: reactionId } } },
+        { new: true }
+      );
+      if (!thought) {
+        res.status(404).json({ message: "Thought not found" });
+        return;
+      }
+      res.status(200).json(thought);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
